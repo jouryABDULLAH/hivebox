@@ -22,7 +22,16 @@ HiveBox is a platform for tracking the environmental sensor data from [openSense
 5. Copy `.env.example` to `.env` and fill in your senseBox IDs
 
   
-  
+## Versioning
+
+This project uses Semantic Versioning (SemVer).
+Current version: v0.0.1
+
+
+- MAJOR: Breaking changes  
+- MINOR: New features  
+- PATCH: Bug fixes  
+
 
 ## Testing
 
