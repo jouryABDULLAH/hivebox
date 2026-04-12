@@ -10,7 +10,8 @@ This project is being developed as part of a DevOps/MLOps learning track, focusi
 
 ## Current Status
 - Phase 1: Setup completed
-- Phase 2: In progress (core application + Docker)
+- Phase 2: core application + Docker completed
+- Phase 3: In-progress
 
 ## Workflow
 Development follows a structured workflow:
@@ -48,8 +49,6 @@ Current version: v0.0.1
 
 ## Testing
 
-> *Documentation will be updated as the project develops.*
-
 The current version of this project includes a simple version-printing application.
 
 To test that the application works correctly inside a Docker container:
@@ -67,9 +66,9 @@ Documentation will be updated as the project develops.
 
 
 ## Next Steps
-- Implement core application logic
-- Add Docker support
-- Introduce CI/CD pipeline
+- Implement the code requirements for API endpoints
+- Apply container best practices (smaller base image, proper CMD, .dockerignore)
+- Prepare for introducing a CI/CD pipeline in later phases
 
 ## Notes
-Documentation will expand as the system evolves.
+*Documentation will expand as the system evolves.*
