@@ -5,4 +5,4 @@ router = APIRouter()
 
 @router.get('/version')
 def version():
-    return settings.APP_VERSION
+    return {'version': settings.APP_VERSION}
