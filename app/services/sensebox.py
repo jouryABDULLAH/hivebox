@@ -17,11 +17,26 @@ def extract_recent_temperatures(data: dict):
 
     temps = []
     for sensor in data.get("sensors", []):
-        temps = [
-            float(sensor["lastMeasurement"]["value"])    
-            for sensor in data["sensors"]    
-            if is_temperature_sensor(sensor)
-        ]
+       
+        if not is_temperature_sensor(sensor):
+            continue
+        
+        measurement = sensor.get("lastMeasurement")
+
+        if not measurement:
+            continue
+
+        ts = measurement.get("createdAt")
+        if not ts:
+            continue
+
+        timestamp = datetime.fromisoformat(ts.replace("Z", "+00:00"))
+        if timestamp < one_hour_ago:
+            continue
+
+        value = float(measurement["value"])
+        temps.append(value)
+
     return temps
 
 def is_temperature_sensor(sensor):
