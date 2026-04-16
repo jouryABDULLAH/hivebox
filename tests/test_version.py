@@ -4,10 +4,9 @@ from app.main import app
 from app.core.config import settings
 
 
-
 @pytest.mark.asyncio
 async def test_version_endpoint():
-    
+
     transport = ASGITransport(app=app)
 
     async with AsyncClient(transport=transport, base_url="http://test") as ac:

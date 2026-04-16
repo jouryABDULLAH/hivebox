@@ -1,6 +1,6 @@
 from fastapi import FastAPI
-from app.api import version, temperature 
-from app.core.config import settings
+from app.api import version, temperature
+
 
 app = FastAPI()
 app.include_router(router=version.router)

@@ -8,7 +8,6 @@ async def fetch_sensebox_data(box_id: str):
         response = await client.get(url)
         response.raise_for_status()
         return response.json()
-    
 
 
 def extract_recent_temperatures(data: dict):
@@ -17,10 +16,9 @@ def extract_recent_temperatures(data: dict):
 
     temps = []
     for sensor in data.get("sensors", []):
-       
+
         if not is_temperature_sensor(sensor):
             continue
-        
         measurement = sensor.get("lastMeasurement")
 
         if not measurement:
@@ -39,6 +37,15 @@ def extract_recent_temperatures(data: dict):
 
     return temps
 
+
 def is_temperature_sensor(sensor):
     title = sensor["title"].lower()
-    return any(keyword in title for keyword in ["temp", "temperatur", "temperature", "tmp"])
+    return any(
+        keyword in title
+        for keyword in [
+            "temp",
+            "temperatur",
+            "temperature",
+            "tmp"
+        ]
+    )
