@@ -15,5 +15,5 @@ async def temperature():
 
     if not temps:
         return {"temperature": None}
-       
+    
     return {"temperature": sum(temps) / len(temps)}
