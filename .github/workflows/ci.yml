@@ -1,0 +1,62 @@
+name: HiveBox CI workflow
+run-name: "HiveBox CI – ${{ github.ref_name }}"
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+  security-events: write
+  id-token: write
+
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses:  actions/setup-python@v5
+        with: 
+          python-version: "3.12"
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Lint Python code
+        run: |
+          pip install flake8
+          flake8 .
+      - name: Lint Dockerfile
+        uses: hadolint/hadolint-action@v3.1.0
+      - name: Run tests
+        run: |
+          pip install pytest httpx 
+          pytest
+      - name: Build Docker image
+        run: docker build -t hivebox-api .
+      - name: Run OpenSSF Scorecard
+        uses: ossf/scorecard-action@v2.3.1
+        with: 
+          results_file: results.sarif
+      - name: Start API server
+        run: |
+          uvicorn app.main:app --host 0.0.0.0 --port 8000 &
+          sleep 3  
+
+      - name: Verify /version endpoint
+        run: |
+          RESPONSE=$(curl -s http://localhost:8000/version)
+          echo "Response: $RESPONSE"
+
+          VERSION=$(echo $RESPONSE | jq -r '.version')
+
+          if [ "$VERSION" != "0.0.1" ]; then
+            echo "❌ Version mismatch: expected 0.0.1 but got $VERSION"
+            exit 1
+          fi
+
+          echo "✔ Version endpoint returned correct value"
+
+
