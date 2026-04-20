@@ -12,7 +12,21 @@ async def temperature():
     for box_id in settings.sensebox_ids:
         data = await fetch_sensebox_data(box_id)
         temps.extend(extract_recent_temperatures(data))
+    status = ''
 
     if not temps:
-        return {"temperature": None}
-    return {"temperature": sum(temps) / len(temps)}
+        return {"temperature": None, "status": status}
+    
+    average_tmp = sum(temps) / len(temps)
+    average_tmp = round(average_tmp, 2)
+    status = classify_temperature(average_tmp)
+    return {"temperature": average_tmp,"status": status}
+
+
+def classify_temperature(temp: float) -> str:
+    if temp < 10:
+        return "Too Cold"
+    elif 10 <= temp <= 36:
+        return "Good"
+    else:
+        return "Too Hot"
