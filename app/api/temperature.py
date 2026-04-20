@@ -9,7 +9,7 @@ router = APIRouter()
 async def temperature():
     temps = []
 
-    for box_id in settings.SENSEBOX_IDS.split(","):
+    for box_id in settings.sensebox_ids:
         data = await fetch_sensebox_data(box_id)
         temps.extend(extract_recent_temperatures(data))
 
