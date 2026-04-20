@@ -66,9 +66,10 @@ Documentation will be updated as the project develops.
 
 
 ## Next Steps
-- Implement the code requirements for API endpoints
-- Apply container best practices (smaller base image, proper CMD, .dockerignore)
-- Prepare for introducing a CI/CD pipeline in later phases
+- Implement the Phase 4 Code Requirements
+- Prepare for Kubernetes Deployment
+- Write Integration Tests
+- Apply RESTAPI and CI best practices
 
 ## Notes
 *Documentation will expand as the system evolves.*
