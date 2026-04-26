@@ -12,6 +12,7 @@ This project is being developed as part of a DevOps/MLOps learning track, focusi
 - Phase 1: Setup completed
 - Phase 2: core application + Docker completed
 - Phase 3: add endpoints + Containers best pracctices + set up CI pipeline
+- Phase 4: in progress
 
 ## Workflow
 Development follows a structured workflow:
