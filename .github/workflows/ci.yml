@@ -34,7 +34,7 @@ jobs:
         working-directory: ${{ github.workspace }}
         run: |
           pip install pytest httpx 
-          pytest pytest tests/unit/
+          pytest tests/unit/
       - name: Build Docker image
         run: docker build -t hivebox-api .
       - name: Run OpenSSF Scorecard
