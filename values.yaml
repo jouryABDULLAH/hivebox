@@ -1,0 +1,13 @@
+# values.yaml
+
+ports:
+  web: # configures Traefik’s HTTP entrypoint
+    port: 80
+    expose:
+      default: true
+    exposedPort: 80 # Kubernetes Service exposes port 80 outside the pod
+    protocol: TCP
+
+providers:
+  kubernetesIngress: # enables Traefik to read standard Kubernetes Ingress objects
+    enabled: true # Traefik watches Ingress resources

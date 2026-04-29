@@ -3,12 +3,18 @@ import pytest
 from httpx import AsyncClient, ASGITransport
 from app.main import app
 from datetime import datetime, timedelta, timezone
+from app.api.temperature import classify_temperature
 
 
 @pytest.mark.asyncio
 async def test_temperature_single_box(monkeypatch):
     now = datetime.now(timezone.utc)
     fresh = (now - timedelta(minutes=10)).isoformat()
+
+    monkeypatch.setattr(
+        "app.api.temperature.settings.SENSEBOX_IDS_RAW",
+        "test-box-id"
+    )
 
     async def mock_fetch(box_id):
         return {
@@ -76,14 +82,14 @@ async def test_temperature_multiple_boxes(monkeypatch):
     )
 
     from app.core.config import settings
-    original = settings.SENSEBOX_IDS
-    settings.SENSEBOX_IDS = "A,B"
+    original = settings.SENSEBOX_IDS_RAW
+    settings.SENSEBOX_IDS_RAW = "A,B"
 
     transport = ASGITransport(app=app)
     async with AsyncClient(transport=transport, base_url="http://test") as ac:
         response = await ac.get("/temperature")
 
-    settings.SENSEBOX_IDS = original
+    settings.SENSEBOX_IDS_RAW = original
 
     assert response.status_code == 200
     assert response.json()["temperature"] == pytest.approx(15.0)
@@ -146,3 +152,24 @@ async def test_temperature_no_temp_sensor(monkeypatch):
         response = await ac.get("/temperature")
 
     assert response.json()["temperature"] is None
+
+
+def test_too_cold():
+    assert classify_temperature(5) == "Too Cold"
+
+
+def test_lower_boundary_good():
+    assert classify_temperature(10) == "Good"
+
+
+def test_middle_good():
+    assert classify_temperature(25) == "Good"
+
+
+def test_upper_boundary_good():
+    assert classify_temperature(36) == "Good"
+
+
+def test_too_hot():
+    assert classify_temperature(40) == "Too Hot"
+    assert classify_temperature(37) == "Too Hot"
