@@ -27,11 +27,14 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Set lowercase owner
+        run: echo "OWNER=$(echo ${{ github.repository_owner }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
           tags: |
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/hivebox:${{ env.APP_VERSION }}
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/hivebox:${{ github.sha }}
+            ghcr.io/${{ env.OWNER }}/hivebox:${{ env.APP_VERSION }}
+            ghcr.io/${{ env.OWNER }}/hivebox:${{ github.sha }}
