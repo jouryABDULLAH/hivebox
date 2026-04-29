@@ -6,7 +6,6 @@ from datetime import datetime, timedelta, timezone
 from app.api.temperature import classify_temperature
 
 
-
 @pytest.mark.asyncio
 async def test_temperature_single_box(monkeypatch):
     now = datetime.now(timezone.utc)
@@ -169,4 +168,3 @@ def test_upper_boundary_good():
 def test_too_hot():
     assert classify_temperature(40) == "Too Hot"
     assert classify_temperature(37) == "Too Hot"
-    
