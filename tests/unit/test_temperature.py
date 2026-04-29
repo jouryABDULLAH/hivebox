@@ -77,14 +77,14 @@ async def test_temperature_multiple_boxes(monkeypatch):
     )
 
     from app.core.config import settings
-    original = settings.SENSEBOX_IDS
-    settings.SENSEBOX_IDS = "A,B"
+    original = settings.SENSEBOX_IDS_RAW
+    settings.SENSEBOX_IDS_RAW = "A,B"
 
     transport = ASGITransport(app=app)
     async with AsyncClient(transport=transport, base_url="http://test") as ac:
         response = await ac.get("/temperature")
 
-    settings.SENSEBOX_IDS = original
+    settings.SENSEBOX_IDS_RAW = original
 
     assert response.status_code == 200
     assert response.json()["temperature"] == pytest.approx(15.0)
