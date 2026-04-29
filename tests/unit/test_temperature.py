@@ -15,7 +15,7 @@ async def test_temperature_single_box(monkeypatch):
         "app.api.temperature.settings.SENSEBOX_IDS_RAW",
         "test-box-id"
     )
-    
+
     async def mock_fetch(box_id):
         return {
             "sensors": [
