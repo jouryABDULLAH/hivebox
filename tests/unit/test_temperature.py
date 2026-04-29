@@ -11,6 +11,12 @@ async def test_temperature_single_box(monkeypatch):
     now = datetime.now(timezone.utc)
     fresh = (now - timedelta(minutes=10)).isoformat()
 
+    monkeypatch.setattr(
+    "app.api.temperature.settings.SENSEBOX_IDS_RAW",
+    "test-box-id"
+)
+
+
     async def mock_fetch(box_id):
         return {
             "sensors": [
