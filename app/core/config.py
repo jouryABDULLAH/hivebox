@@ -6,7 +6,7 @@ class Settings(BaseSettings):
     APP_VERSION: str = "0.0.1"
     SENSEBOX_IDS_RAW: str = ""
 
-    model_config = SettingsConfigDict(env_file=".env")
+    model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
     @property
     def sensebox_ids(self) -> list[str]:
