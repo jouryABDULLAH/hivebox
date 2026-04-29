@@ -3,6 +3,8 @@ import pytest
 from httpx import AsyncClient, ASGITransport
 from app.main import app
 from datetime import datetime, timedelta, timezone
+from app.api.temperature import classify_temperature
+
 
 
 @pytest.mark.asyncio
@@ -148,20 +150,23 @@ async def test_temperature_no_temp_sensor(monkeypatch):
     assert response.json()["temperature"] is None
 
 
-from app.api.temperature import classify_temperature
-
 def test_too_cold():
     assert classify_temperature(5) == "Too Cold"
+
 
 def test_lower_boundary_good():
     assert classify_temperature(10) == "Good"
 
+
 def test_middle_good():
     assert classify_temperature(25) == "Good"
+
 
 def test_upper_boundary_good():
     assert classify_temperature(36) == "Good"
 
+
 def test_too_hot():
-    assert classify_temperature(40) == "Too Hot"    
+    assert classify_temperature(40) == "Too Hot"
     assert classify_temperature(37) == "Too Hot"
+    

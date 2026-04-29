@@ -16,11 +16,10 @@ async def temperature():
 
     if not temps:
         return {"temperature": None, "status": status}
-    
     average_tmp = sum(temps) / len(temps)
     average_tmp = round(average_tmp, 2)
     status = classify_temperature(average_tmp)
-    return {"temperature": average_tmp,"status": status}
+    return {"temperature": average_tmp, "status": status}
 
 
 def classify_temperature(temp: float) -> str:
