@@ -7,7 +7,8 @@ metadata:
 spec: # information needed to configure a load balancer or proxy server.
   ingressClassName: traefik
   rules: # matched against all incoming requests
-  - http:
+  - host: hivebox.local
+    http:
       paths:
       - pathType: Prefix
         path: /
