@@ -1,76 +1,42 @@
 # HiveBox
 
   
-
-HiveBox is a platform for tracking the environmental sensor data from [openSenseMap](https://opensensemap.org/).
+Real-time environmental monitoring system that aggregates and processes sensor data from [openSenseMap](https://opensensemap.org/) IoT devices.
+ 
 
 
 ## Objective
-This project is being developed as part of a DevOps/MLOps learning track, focusing on building a system incrementally while applying real-world development workflows.
+HiveBox provides a RESTful API for querying temperature data from distributed senseBox sensors, with built-in caching, storage, and observability features.
 
-## Current Status
-- Phase 1: Setup completed
-- Phase 2: core application + Docker completed
-- Phase 3: add endpoints + Containers best pracctices + set up CI pipeline
-- Phase 4: in progress
+## Features
 
-## Workflow
-Development follows a structured workflow:
-- Each phase is tracked as a GitHub Issue
-- Work is done in feature branches
-- Changes are merged via Pull Requests linked to issues
-- Progress is tracked using a Kanban board
-  
-
-## Setup
+- **Real-time data aggregation** from multiple openSenseMap sensors
+- **Intelligent caching** using Redis/Valkey to reduce external API calls
+- **Persistent storage** with MinIO for historical data analysis  
+- **Production-ready deployment** on Google Kubernetes Engine
+- **Automated CI/CD pipeline** with security scanning and quality gates
+- **Infrastructure as Code** using Terraform and Helm
 
   
+## API Endpoints
+- `GET /version` - Application version
+- `GET /temperature` - Current temperature from configured sensors
+- `GET /metrics` - Prometheus metrics
+- `POST /store` - Manual data persistence triggers
 
-1. Clone the repository
+## Deployment
+Deployed on Google Kubernetes Engine with:
+- Helm chart for application packaging
+- Terraform for infrastructure provisioning
+- Automated CI/CD via GitHub Actions
+- Horizontal pod autoscaling
 
-2. Create a virtual environment: `python -m venv venv`
-
-3. Activate it: `source venv/bin/activate`
-
-4. Install dependencies: `pip install -r requirements.txt`
-
-5. Copy `.env.example` to `.env` and fill in your senseBox IDs
-
-  
 ## Versioning
-
 This project uses Semantic Versioning (SemVer).
 Current version: v0.0.1
-
-
 - MAJOR: Breaking changes  
 - MINOR: New features  
 - PATCH: Bug fixes  
-
-
-## Testing
-
-The current version of this project includes a simple version-printing application.
-
-To test that the application works correctly inside a Docker container:
-
-1. Build the Docker image:<br>
-`docker build -t hivebox:0.0.1 .`
-
-2. Rin the container:<br>
-`docker run hivebox:0.0.1 `
-
-3. Verify the output:<br>
-The container should print the current application version:
-`0.0.1`
-Documentation will be updated as the project develops.
-
-
-## Next Steps
-- Implement the Phase 4 Code Requirements
-- Prepare for Kubernetes Deployment
-- Write Integration Tests
-- Apply RESTAPI and CI best practices
 
 ## Notes
 *Documentation will expand as the system evolves.*
