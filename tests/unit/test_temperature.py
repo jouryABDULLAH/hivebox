@@ -8,6 +8,7 @@ from app.api.temperature import classify_temperature
 
 @pytest.mark.asyncio
 async def test_temperature_single_box(monkeypatch):
+    monkeypatch.setattr("app.services.cache.CacheService", lambda *args, **kwargs: None)
     now = datetime.now(timezone.utc)
     fresh = (now - timedelta(minutes=10)).isoformat()
 
@@ -45,6 +46,8 @@ async def test_temperature_single_box(monkeypatch):
 
 @pytest.mark.asyncio
 async def test_temperature_multiple_boxes(monkeypatch):
+    monkeypatch.setattr("app.services.cache.CacheService", lambda *args, **kwargs: None)
+
     now = datetime.now(timezone.utc)
     fresh = (now - timedelta(minutes=5)).isoformat()
 
@@ -97,6 +100,8 @@ async def test_temperature_multiple_boxes(monkeypatch):
 
 @pytest.mark.asyncio
 async def test_temperature_stale_data(monkeypatch):
+    monkeypatch.setattr("app.services.cache.CacheService", lambda *args, **kwargs: None)
+
     now = datetime.now(timezone.utc)
     stale = (now - timedelta(hours=5)).isoformat()
 
@@ -129,6 +134,8 @@ async def test_temperature_stale_data(monkeypatch):
 
 @pytest.mark.asyncio
 async def test_temperature_no_temp_sensor(monkeypatch):
+    monkeypatch.setattr("app.services.cache.CacheService", lambda *args, **kwargs: None)
+
     async def mock_fetch(box_id):
         return {
             "sensors": [
