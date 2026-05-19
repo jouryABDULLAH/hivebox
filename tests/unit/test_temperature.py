@@ -8,6 +8,10 @@ from app.api.temperature import classify_temperature
 
 @pytest.mark.asyncio
 async def test_temperature_single_box(monkeypatch):
+    monkeypatch.setattr("app.api.temperature.get_cached_temp", lambda *a, **k: None)
+    monkeypatch.setattr("app.api.temperature.cache_temp", lambda *a, **k: None)
+    monkeypatch.setattr("app.services.cache.redis_client", None)
+
     now = datetime.now(timezone.utc)
     fresh = (now - timedelta(minutes=10)).isoformat()
 
@@ -45,6 +49,11 @@ async def test_temperature_single_box(monkeypatch):
 
 @pytest.mark.asyncio
 async def test_temperature_multiple_boxes(monkeypatch):
+    monkeypatch.setattr("app.api.temperature.get_cached_temp", lambda *a, **k: None)
+    monkeypatch.setattr("app.api.temperature.cache_temp", lambda *a, **k: None)
+    monkeypatch.setattr("app.services.cache.redis_client", None)
+
+
     now = datetime.now(timezone.utc)
     fresh = (now - timedelta(minutes=5)).isoformat()
 
@@ -97,6 +106,11 @@ async def test_temperature_multiple_boxes(monkeypatch):
 
 @pytest.mark.asyncio
 async def test_temperature_stale_data(monkeypatch):
+    monkeypatch.setattr("app.api.temperature.get_cached_temp", lambda *a, **k: None)
+    monkeypatch.setattr("app.api.temperature.cache_temp", lambda *a, **k: None)
+    monkeypatch.setattr("app.services.cache.redis_client", None)
+
+
     now = datetime.now(timezone.utc)
     stale = (now - timedelta(hours=5)).isoformat()
 
@@ -129,6 +143,11 @@ async def test_temperature_stale_data(monkeypatch):
 
 @pytest.mark.asyncio
 async def test_temperature_no_temp_sensor(monkeypatch):
+    monkeypatch.setattr("app.api.temperature.get_cached_temp", lambda *a, **k: None)
+    monkeypatch.setattr("app.api.temperature.cache_temp", lambda *a, **k: None)
+    monkeypatch.setattr("app.services.cache.redis_client", None)
+
+
     async def mock_fetch(box_id):
         return {
             "sensors": [

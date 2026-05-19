@@ -6,6 +6,15 @@ class Settings(BaseSettings):
     APP_VERSION: str = "0.0.1"
     SENSEBOX_IDS_RAW: str = ""
 
+    # Redis/Valkey
+    REDIS_HOST: str = "valkey-redis-master"
+    REDIS_PORT: int = 6379
+    
+    # MinIO
+    MINIO_ENDPOINT: str = "minio:9000"
+    MINIO_ACCESS_KEY: str = "admin"
+    MINIO_SECRET_KEY: str = "password123"
+
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
     @property

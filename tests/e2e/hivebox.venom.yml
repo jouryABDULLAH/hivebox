@@ -1,0 +1,89 @@
+name: HiveBox End-to-End Test Suite
+vars:
+  base_url: http://34.120.x.x  # GKE external IP placeholder, Exported it through the terminal after deployment
+
+testcases:
+- name: Test version endpoint
+  steps:
+  - type: http
+    method: GET
+    url: "{{.base_url}}/version"
+    assertions:
+    - result.statuscode ShouldEqual 200
+    - result.bodyjson.version ShouldEqual "0.0.2"
+
+- name: Test temperature endpoint
+  steps:
+  - type: http
+    method: GET
+    url: "{{.base_url}}/temperature"
+    assertions:
+    - result.statuscode ShouldEqual 200
+    - result.bodyjson ShouldContainKey temperature
+    - result.bodyjson ShouldContainKey status
+
+- name: Test metrics endpoint
+  steps:
+  - type: http
+    method: GET
+    url: "{{.base_url}}/metrics"
+    assertions:
+    - result.statuscode ShouldEqual 200
+    - result.body ShouldContainSubstring "http_requests_total"
+
+- name: Test store endpoint
+  steps:
+  - type: http
+    method: GET
+    url: "{{.base_url}}/store"
+    assertions:
+    - result.statuscode ShouldEqual 200
+    - result.bodyjson.status ShouldEqual "stored"
+
+
+- name: Test caching behavior
+  steps:
+
+  - name: Clear Redis
+    type: exec
+    script: kubectl exec valkey-master-0 -- redis-cli FLUSHALL
+
+  - name: First request (cache miss)
+    type: http
+    method: GET
+    url: "{{.base_url}}/temperature"
+    assertions:
+      - result.statuscode ShouldEqual 200
+    vars:
+      first_duration:
+        from: result.timeseconds
+
+  - type: exec
+    script: sleep 1
+
+  - name: Second request (cache hit)
+    type: http
+    method: GET
+    url: "{{.base_url}}/temperature"
+    assertions:
+      - result.statuscode ShouldEqual 200
+      - result.timeseconds ShouldBeLessThan {{.first_duration}}
+
+
+- name: Verify Redis connectivity
+  steps:
+  - type: exec
+    # script: kubectl get pods -l app=valkey
+    script: kubectl exec -it valkey-master-0 -- redis-cli ping
+    assertions:
+    - result.code ShouldEqual 0
+    - result.systemout ShouldContainSubstring "PONG"
+
+
+# - name: Verify MinIO connectivity
+#   steps:
+#   - type: exec
+#     script: kubectl get pods -l app.kubernetes.io/name=minio
+#     assertions:
+#     - result.code ShouldEqual 0
+#     - result.systemout ShouldContainSubstring "Running"

@@ -1,0 +1,18 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# include MinIO raw YAML
+resources:
+  - minio.yaml
+
+# include Valkey via Helm
+helmCharts:
+  - name: redis
+    repo: https://charts.bitnami.com/bitnami
+    version: 25.5.3
+    releaseName: valkey
+    namespace: default
+    valuesInline:
+      auth:
+        enabled: false
+      fullnameOverride: valkey
