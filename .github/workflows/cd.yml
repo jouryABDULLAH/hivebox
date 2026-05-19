@@ -74,6 +74,11 @@ jobs:
             ghcr.io/${{ env.OWNER }}/hivebox:${{ env.APP_VERSION }}
             ghcr.io/${{ env.OWNER }}/hivebox:${{ github.sha }}
       
+      - name: gcloud debyg step
+        run: |
+          gcloud auth list
+          gcloud config list
+
 
       - name: Authenticate to GKE
         id: auth
@@ -81,6 +86,7 @@ jobs:
         with:
           workload_identity_provider: projects/1066958358457/locations/global/workloadIdentityPools/github/providers/githubactions
           service_account: github-deployer@hivebox-495409.iam.gserviceaccount.com
+          token_format: access_token
 
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
