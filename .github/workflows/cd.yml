@@ -80,12 +80,24 @@ jobs:
           gcloud config list
 
 
-      - name: Authenticate to GKE
-        id: auth
+      - name: Authenticate to GCP
         uses: google-github-actions/auth@v2
         with:
           workload_identity_provider: projects/1066958358457/locations/global/workloadIdentityPools/github/providers/githubactions
           service_account: github-deployer@hivebox-495409.iam.gserviceaccount.com
+          create_credentials_file: true
+
+      - name: Set ADC explicitly
+        run: |
+          echo "GOOGLE_APPLICATION_CREDENTIALS=$GOOGLE_APPLICATION_CREDENTIALS" >> $GITHUB_ENV
+          
+      - name: Debug credentials
+        run: |
+          echo $GOOGLE_APPLICATION_CREDENTIALS
+          ls -la $GOOGLE_APPLICATION_CREDENTIALS || true
+          gcloud auth list
+
+
 
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
