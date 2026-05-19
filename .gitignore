@@ -15,3 +15,8 @@ override.tf.json
 *_override.tf
 *_override.tf.json
 *.tgz
+helm/hivebox/values-secrets.yaml
+k8s/infra/**/charts/
+venom.*.log
+venom.log
+logs.txt
