@@ -86,7 +86,6 @@ jobs:
         with:
           workload_identity_provider: projects/1066958358457/locations/global/workloadIdentityPools/github/providers/githubactions
           service_account: github-deployer@hivebox-495409.iam.gserviceaccount.com
-          token_format: access_token
 
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
