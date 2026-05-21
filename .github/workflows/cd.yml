@@ -129,8 +129,21 @@ jobs:
 
       - name: Health check
         run: |
-          sleep 30  # Give LB time to be fully ready
-          curl -f http://${{ steps.ingress.outputs.IP }}/version || exit 1
+          for i in {1..20}; do
+            echo "Attempt $i..."
+
+            if curl -fsS --connect-timeout 5 \
+              http://${{ steps.ingress.outputs.IP }}/version; then
+              echo "Health check passed"
+              exit 0
+            fi
+
+            echo "Waiting for service..."
+            sleep 15
+          done
+
+          echo "Health check failed"
+          exit 1
 
       - name: Install Venom
         run: |
