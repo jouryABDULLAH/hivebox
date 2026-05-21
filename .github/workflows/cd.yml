@@ -150,6 +150,10 @@ jobs:
           curl -fsSL https://github.com/ovh/venom/releases/download/v1.3.0/venom.linux-amd64 -o /usr/local/bin/venom
           chmod +x /usr/local/bin/venom
 
+      - name: Wait for rollout
+        run: |
+          kubectl rollout status deployment/hivebox --timeout=300s
+          
       - name: Run e2e tests
         run: venom run ./tests/e2e/hivebox.venom.yml --var="base_url=http://${{ steps.ingress.outputs.IP }}"
 
