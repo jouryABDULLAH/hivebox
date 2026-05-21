@@ -142,16 +142,16 @@ livenessProbe:
   httpGet:
     path: /readyz
     port: 8000
-  initialDelaySeconds: 30
-  failureThreshold: 30
-  periodSeconds: 2
+  initialDelaySeconds: 180
+  failureThreshold: 5
+  periodSeconds: 10
 readinessProbe:
   httpGet:
     path: /readyz
     port: 8000
   initialDelaySeconds: 120
-  failureThreshold: 5
-  periodSeconds: 2
+  failureThreshold: 10
+  periodSeconds: 3
 
 # This section is for setting up autoscaling more information can be found here: https://kubernetes.io/docs/concepts/workloads/autoscaling/
 autoscaling:
