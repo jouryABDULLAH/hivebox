@@ -34,6 +34,7 @@ jobs:
             MINIO_ENDPOINT: "${{ secrets.MINIO_ENDPOINT }}"
             REDIS_HOST: "${{ secrets.REDIS_HOST }}"
             REDIS_PORT: "${{ secrets.REDIS_PORT }}"
+            APP_VERSION: "0.0.3"
             SENSEBOX_IDS_RAW: "${{ secrets.SENSEBOX_IDS_RAW }}"
           EOF
 
