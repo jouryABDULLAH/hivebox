@@ -35,7 +35,7 @@ async def periodic_store_task():
 app = FastAPI()
 app.include_router(router=version.router)
 app.include_router(router=temperature.router)
-# app.include_router(router=store.router)
+app.include_router(router=store.router)
 app.include_router(router=health.router)
 
 Instrumentator().instrument(app).expose(app)
