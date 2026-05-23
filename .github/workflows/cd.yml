@@ -77,6 +77,14 @@ jobs:
       - name: Set up Helm
         uses: azure/setup-helm@v4
 
+
+      - name: Create or update MinIO Kubernetes secret
+        run: |
+          kubectl create secret generic minio-secret \
+            --from-literal=MINIO_ROOT_USER="${{ secrets.MINIO_ROOT_USER }}" \
+            --from-literal=MINIO_ROOT_PASSWORD="${{ secrets.MINIO_ROOT_PASSWORD }}" \
+            --dry-run=client -o yaml | kubectl apply -f -
+            
       - name: Install kustomize
         run: |
           VERSION="v5.8.1"
