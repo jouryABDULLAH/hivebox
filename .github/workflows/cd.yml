@@ -31,6 +31,8 @@ jobs:
           secrets:
             MINIO_ACCESS_KEY: "${{ secrets.MINIO_ACCESS_KEY }}"
             MINIO_SECRET_KEY: "${{ secrets.MINIO_SECRET_KEY }}"
+            MINIO_ROOT_USER: "${{ secrets.MINIO_ROOT_USER }}"
+            MINIO_ROOT_PASSWORD: "${{ secrets.MINIO_ROOT_PASSWORD }}"
             MINIO_ENDPOINT: "${{ secrets.MINIO_ENDPOINT }}"
             REDIS_HOST: "${{ secrets.REDIS_HOST }}"
             REDIS_PORT: "${{ secrets.REDIS_PORT }}"
