@@ -81,6 +81,7 @@ jobs:
       - name: Create or update MinIO Kubernetes secret
         run: |
           kubectl create secret generic minio-secret \
+            -n default \
             --from-literal=MINIO_ROOT_USER="${{ secrets.MINIO_ROOT_USER }}" \
             --from-literal=MINIO_ROOT_PASSWORD="${{ secrets.MINIO_ROOT_PASSWORD }}" \
             --dry-run=client -o yaml | kubectl apply -f -
