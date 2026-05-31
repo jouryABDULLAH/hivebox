@@ -60,7 +60,6 @@ testcases:
 - name: Verify Redis connectivity
   steps:
   - type: exec
-    # script: kubectl get pods -l app=valkey
     script: kubectl exec -it valkey-master-0 -- redis-cli ping
     assertions:
     - result.code ShouldEqual 0
