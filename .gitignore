@@ -21,3 +21,4 @@ k8s/infra/**/charts/
 venom.*.log
 venom.log
 logs.txt
+values-grafana.yaml
