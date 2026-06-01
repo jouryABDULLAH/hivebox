@@ -1,6 +1,6 @@
 from prometheus_client import Counter, Gauge, Histogram 
 
-sensebox_fecth_total = Counter(
+sensebox_fetch_total = Counter(
     'sensebox_fetch_total',
     'Total senseBox API fetches',
     ['box_id', 'status']
