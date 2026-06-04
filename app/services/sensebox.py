@@ -1,13 +1,40 @@
 import httpx
+import time
 from datetime import datetime, timedelta, timezone
+
+from app.metrics import (
+    sensebox_fetch_total,
+    sensebox_fetch_failures,
+    sensebox_response_time
+)
 
 
 async def fetch_sensebox_data(box_id: str):
+    start_time = time.time()
+
     url = f"https://api.opensensemap.org/boxes/{box_id}"
-    async with httpx.AsyncClient(timeout=20.0) as client:
-        response = await client.get(url)
-        response.raise_for_status()
-        return response.json()
+
+    try:
+        async with httpx.AsyncClient(timeout=10.0) as client:
+            response = await client.get(url)
+            response.raise_for_status()
+
+            # Record success
+            sensebox_fetch_total.labels(box_id=box_id, status='success').inc()
+            
+            return response.json()
+        
+    except Exception:
+        # Record failure
+        sensebox_fetch_total.labels(box_id=box_id, status='failure').inc()
+        sensebox_fetch_failures.labels(box_id=box_id).inc()
+        raise
+
+    finally:
+        # Record response time
+        duration = time.time() - start_time
+        sensebox_response_time.labels(box_id=box_id).observe(duration)
+
 
 
 def extract_recent_temperatures(data: dict):

@@ -5,7 +5,9 @@ metadata:
   labels:
     app: {{ include "hivebox.name" . }}
 spec:
+  {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
+  {{- end }}
   selector:
     matchLabels:
       app: {{ include "hivebox.name" . }}
@@ -16,6 +18,10 @@ spec:
         {{- with .Values.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
+      annotations:
+        k8s.grafana.com/scrape: "true"
+        k8s.grafana.com/metrics.portNumber: "8000"
+        k8s.grafana.com/metrics.path: "/metrics"
     spec:
       serviceAccountName: {{ include "hivebox.serviceAccountName" . }}
       containers:

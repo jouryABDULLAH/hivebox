@@ -15,4 +15,10 @@ helmCharts:
     valuesInline:
       auth:
         enabled: false
+      master:
+        persistence:
+          enabled: false
+      replica:
+        persistence:
+          enabled: false
       fullnameOverride: valkey

@@ -3,7 +3,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
 
-    APP_VERSION: str = "0.0.3"
+    APP_VERSION: str = "0.0.4"
     SENSEBOX_IDS_RAW: str = ""
 
     # Redis/Valkey
