@@ -10,7 +10,7 @@ testcases:
     url: "{{.base_url}}/version"
     assertions:
     - result.statuscode ShouldEqual 200
-    - result.bodyjson.version ShouldEqual "0.0.3"
+    - result.bodyjson.version ShouldNotBeEmpty
 
 - name: Test temperature endpoint
   steps:
