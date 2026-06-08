@@ -17,13 +17,19 @@ permissions:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
-  APP_VERSION: 0.0.3
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: Read version
+        id: version
+        run: echo "APP_VERSION=$(cat VERSION)" >> $GITHUB_OUTPUT
+
+      - name: Set lowercase owner
+        run: echo "OWNER=$(echo ${{ github.repository_owner }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
 
       - name: Create values-secrets.yaml
         run: |
@@ -36,7 +42,6 @@ jobs:
             MINIO_ENDPOINT: "${{ secrets.MINIO_ENDPOINT }}"
             REDIS_HOST: "${{ secrets.REDIS_HOST }}"
             REDIS_PORT: "${{ secrets.REDIS_PORT }}"
-            APP_VERSION: "0.0.3"
             SENSEBOX_IDS_RAW: "${{ secrets.SENSEBOX_IDS_RAW }}"
           EOF
 
@@ -47,8 +52,6 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Set lowercase owner
-        run: echo "OWNER=$(echo ${{ github.repository_owner }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
@@ -56,7 +59,7 @@ jobs:
           context: .
           push: true
           tags: |
-            ghcr.io/${{ env.OWNER }}/hivebox:${{ env.APP_VERSION }}
+            ghcr.io/${{ env.OWNER }}/hivebox:${{ steps.version.outputs.APP_VERSION }}
             ghcr.io/${{ env.OWNER }}/hivebox:${{ github.sha }}
 
       - name: Authenticate to GCP

@@ -1,9 +1,17 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
+from pathlib import Path
+
+
+def _read_version() -> str:
+    version_file = Path(__file__).parent.parent.parent / "VERSION"
+    if version_file.exists():
+        return version_file.read_text().strip()
+    return "0.0.0"
 
 
 class Settings(BaseSettings):
 
-    APP_VERSION: str = "0.0.4"
+    APP_VERSION: str = _read_version() 
     SENSEBOX_IDS_RAW: str = ""
 
     # Redis/Valkey
