@@ -81,7 +81,7 @@ jobs:
         uses: azure/setup-helm@v4
 
 
-      - name: Create or update MinIO Kubernetes secret
+      - name: Create MinIO Kubernetes secret
         run: |
           kubectl create secret generic minio-secret \
             -n default \
